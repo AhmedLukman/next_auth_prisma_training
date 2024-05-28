@@ -7,6 +7,7 @@ import {
   Link,
   Button,
   Avatar,
+  Tooltip,
 } from "@nextui-org/react";
 import React from "react";
 
@@ -21,7 +22,7 @@ const NavbarUI = async () => {
       {user && (
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
-            <Link className="text-white udner" href="/post/add">
+            <Link className="text-white udner" href="/posts/add">
               ADD POST
             </Link>
           </NavbarItem>{" "}
@@ -34,7 +35,7 @@ const NavbarUI = async () => {
         </NavbarContent>
       )}
       <NavbarContent justify="end">
-        <NavbarItem className="flex gap-2 items-center">
+        <NavbarItem>
           {!user && (
             <form
               action={async () => {
@@ -46,14 +47,15 @@ const NavbarUI = async () => {
             </form>
           )}
           {user && (
-            <>
-              <Avatar
-                name={user.name || ""}
-                src={user.image || ""}
-                showFallback
-              />
-              <span>{user.name}</span>
-            </>
+            <Tooltip content={user.name}>
+              <Link href={`/user/${user.id}`}>
+                <Avatar
+                  name={user.name || ""}
+                  src={user.image || ""}
+                  showFallback
+                />
+              </Link>
+            </Tooltip>
           )}
         </NavbarItem>
         {user && (
