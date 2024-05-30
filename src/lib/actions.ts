@@ -30,7 +30,7 @@ export const addPost = async (
     };
   }
 
-  if (content.trim().length === 0 || !content){
+  if (content.trim().length === 0 || !content) {
     return {
       ...initialAddPostFormState,
       contentError: "Content is required",
@@ -56,8 +56,25 @@ export const addPost = async (
     };
   }
 
-  revalidatePath("/posts")
+  revalidatePath("/posts");
   redirect("/posts");
+};
 
+export const deletePost = async (id: string) => {
+  const session = await auth();
+  const user = session?.user;
+console.log('server action triggered')
+  if (!user) throw new Error("You must be logged in to delete a post");
+  try {
+    await prisma.post.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to delete post");
+  }
 
+  revalidatePath("/posts");
+  redirect("/posts");
 };
