@@ -29,7 +29,7 @@ const AddPostForm = () => {
         errorMessage={contentError}
         isInvalid={!!contentError}
       />
-      <SubmitButton>Add post</SubmitButton>
+      <SubmitButton color="secondary">Add post</SubmitButton>
     </form>
   );
 };
