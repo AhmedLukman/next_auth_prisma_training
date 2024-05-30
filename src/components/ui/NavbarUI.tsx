@@ -17,7 +17,7 @@ const NavbarUI = async () => {
   return (
     <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">
       <NavbarBrand>
-        <h1 className="font-bold">NEXT AUTH PRISMA TRAINING</h1>
+          <Link className="font-bold text-white" href="/">NEXT AUTH PRISMA TRAINING</Link>
       </NavbarBrand>
       {user && (
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
