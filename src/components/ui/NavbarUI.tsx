@@ -22,7 +22,7 @@ const NavbarUI = async () => {
       {user && (
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
           <NavbarItem>
-            <Link className="text-white udner" href="/posts/add">
+            <Link className="text-white" href="/posts/add">
               ADD POST
             </Link>
           </NavbarItem>{" "}
