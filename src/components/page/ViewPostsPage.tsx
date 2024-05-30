@@ -35,6 +35,7 @@ const ViewPostsPage = ({
           onSelectionChange={setValue}
           selectedKeys={value}
           className="max-w-20"
+          color="secondary"
         >
           <SelectItem key="all">All</SelectItem>
           <SelectItem key="my">My</SelectItem>
@@ -46,6 +47,7 @@ const ViewPostsPage = ({
         {mutatingPosts.map((post) => (
           <PostCard
             key={post.id}
+            id={post.id}
             content={post.content}
             title={post.title}
             author={post?.author.name || ""}
