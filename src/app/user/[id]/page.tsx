@@ -32,11 +32,13 @@ const UserDetailsPage = async ({
 }: {
   params: { id: string };
 }) => {
+  
+  const session = await auth();
+  if (!session?.user) redirect(`/api/auth/signin?callbackUrl=/user/${id}`);
+
   const user = await getUser(id);
   if (!user) notFound();
 
-  const session = await auth();
-  if (!session?.user) redirect(`/api/auth/signin?callbackUrl=/user/${id}`);
 
   const isViewerTheUser = session.user.id === user.id;
 
