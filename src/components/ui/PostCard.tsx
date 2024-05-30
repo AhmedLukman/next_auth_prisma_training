@@ -6,21 +6,22 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  cn,
 } from "@nextui-org/react";
 import React from "react";
 import SubmitButton from "./SubmitButton";
+import { Post, User } from "@prisma/client";
 
 const PostCard = ({
-  title,
-  content,
-  author,
-  id,
+  post: { title, content, id: postId, author: {name}, authorId },
+  userId,
 }: {
-  id: string;
-  title: string;
-  content: string;
-  author: string;
+  post: {
+    author: User;
+  } & Post;
+  userId: string;
 }) => {
+  const isUserTheAuthor = userId === authorId;
   return (
     <Card className="min-h-72">
       <CardHeader className="flex gap-3 text-lg font-bold">{title}</CardHeader>
@@ -29,11 +30,17 @@ const PostCard = ({
         <p>{content}</p>
       </CardBody>
       <Divider />
-      <CardFooter className=" flex justify-between">
-        <form action={deletePost.bind(null, id)}>
-          <SubmitButton color="danger">Delete</SubmitButton>
-        </form>
-        <p>@{author}</p>
+      <CardFooter
+        className={`flex ${
+          isUserTheAuthor ? "justify-between" : "justify-end"
+        }`}
+      >
+        {isUserTheAuthor && (
+          <form action={deletePost.bind(null, postId, authorId)}>
+            <SubmitButton color="danger">Delete</SubmitButton>
+          </form>
+        )}
+        <p>@{name}</p>
       </CardFooter>
     </Card>
   );

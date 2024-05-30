@@ -44,15 +44,15 @@ const ViewPostsPage = ({
       </div>
       <section className="grid grid-cols-2 max-w-5xl mx-auto justify-center my-10 gap-5">
         {mutatingPosts.length === 0 && <p>No posts added yet.</p>}
-        {mutatingPosts.map((post) => (
-          <PostCard
-            key={post.id}
-            id={post.id}
-            content={post.content}
-            title={post.title}
-            author={post?.author.name || ""}
-          />
-        ))}
+        {mutatingPosts.map((post) => {
+          return (
+            <PostCard
+              key={post.id}
+              post = {post}
+              userId = {userId}
+            />
+          );
+        })}
       </section>
     </main>
   );
