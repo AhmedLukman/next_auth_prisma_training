@@ -60,15 +60,17 @@ export const addPost = async (
   redirect("/posts");
 };
 
-export const deletePost = async (id: string) => {
+export const deletePost = async (id: string, authorId: string) => {
   const session = await auth();
   const user = session?.user;
-console.log('server action triggered')
+
   if (!user) throw new Error("You must be logged in to delete a post");
+  if(user.id !== authorId) throw new Error("You must be the author of the post to delete it");
+  
   try {
     await prisma.post.delete({
       where: {
-        id,
+        id
       },
     });
   } catch (error) {
@@ -76,5 +78,4 @@ console.log('server action triggered')
   }
 
   revalidatePath("/posts");
-  redirect("/posts");
 };
