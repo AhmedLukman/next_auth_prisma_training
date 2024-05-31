@@ -12,7 +12,6 @@ const DateInputUI = ({date}: {date: Date}) => {
       isDisabled
       variant="underlined"
       defaultValue={new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate())}
-      className="max-w-sm"
     />
   );
 }
