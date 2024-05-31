@@ -7,8 +7,9 @@ import { useFormStatus } from "react-dom";
 const SubmitButton = ({
   children,
   color,
+  className
 }: PropsWithChildren & {
-  color:
+  color?:
     | "default"
     | "secondary"
     | "primary"
@@ -16,12 +17,14 @@ const SubmitButton = ({
     | "warning"
     | "danger"
     | undefined;
+    className?: string;
 }) => {
   const { pending } = useFormStatus();
   return (
     <Button
       type="submit"
-      className=" self-end"
+      // className=" self-end"
+      className={className}
       color={color}
       isLoading={pending}
     >
