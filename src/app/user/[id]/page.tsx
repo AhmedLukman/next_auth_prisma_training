@@ -31,15 +31,19 @@ const UserDetailsFetchPage = async ({
 }: {
   params: { id: string };
 }) => {
-  
   const session = await auth();
   if (!session?.user) redirect(`/api/auth/signin?callbackUrl=/user/${id}`);
 
   const userRecord = await getUserRecord(id);
   if (!userRecord) notFound();
 
+  const isViewerTheUser = session.user?.id === userRecord.id;
+
   return (
-   <UserDetailsPage userRecord={userRecord} session={session} />
+    <UserDetailsPage
+      userRecord={userRecord}
+      isViewerTheUser={isViewerTheUser}
+    />
   );
 };
 
