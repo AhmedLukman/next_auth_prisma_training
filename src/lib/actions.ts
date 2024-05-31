@@ -65,12 +65,13 @@ export const deletePost = async (id: string, authorId: string) => {
   const user = session?.user;
 
   if (!user) throw new Error("You must be logged in to delete a post");
-  if(user.id !== authorId) throw new Error("You must be the author of the post to delete it");
-  
+  if (user.id !== authorId)
+    throw new Error("You must be the author of the post to delete it");
+
   try {
     await prisma.post.delete({
       where: {
-        id
+        id,
       },
     });
   } catch (error) {
@@ -78,4 +79,41 @@ export const deletePost = async (id: string, authorId: string) => {
   }
 
   revalidatePath("/posts");
+};
+
+export const updateProfile = async ({ username }: { username: string }) => {
+  const session = await auth();
+  const user = session?.user;
+
+  // const isUserTheEditor = session?.user?.id === user.id;
+
+  if (!user) throw new Error("You must be logged in to update your profile");
+
+  if (username === user.name) return;
+
+  if (username.trim().length === 0 || !username)
+    throw new Error(
+      JSON.stringify({ field: "username", message: "Username is invalid" })
+    );
+
+  try {
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        name: username,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(
+        JSON.stringify({
+          field: "db",
+          message: "Failed to update profile" + error.message,
+        })
+      );
+  }
+
+  revalidatePath(`/user/${user.id}`);
 };
