@@ -32,6 +32,7 @@ const ViewPostsPage = ({
     <main>
       <div className="flex gap-5 justify-center items-center mt-20">
         <Select
+          disallowEmptySelection
           onSelectionChange={setValue}
           selectedKeys={value}
           className="max-w-20"
@@ -45,13 +46,7 @@ const ViewPostsPage = ({
       <section className="grid grid-cols-2 max-w-5xl mx-auto justify-center my-10 gap-5">
         {mutatingPosts.length === 0 && <p>No posts added yet.</p>}
         {mutatingPosts.map((post) => {
-          return (
-            <PostCard
-              key={post.id}
-              post = {post}
-              userId = {userId}
-            />
-          );
+          return <PostCard key={post.id} post={post} userId={userId} />;
         })}
       </section>
     </main>
