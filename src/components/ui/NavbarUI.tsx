@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "@nextui-org/react";
 import React from "react";
+import SubmitButton from "./SubmitButton";
 
 const NavbarUI = async () => {
   const session = await auth();
@@ -66,7 +67,7 @@ const NavbarUI = async () => {
                 await signOut();
               }}
             >
-              <Button type="submit">Sign Out</Button>
+              <SubmitButton>Sign Out</SubmitButton>
             </form>
           </NavbarItem>
         )}
