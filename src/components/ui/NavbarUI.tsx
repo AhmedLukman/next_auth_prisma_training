@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import SubmitButton from "./SubmitButton";
+import { Role } from "@/lib/contants";
 
 const NavbarUI = async () => {
   const session = await auth();
@@ -18,7 +19,9 @@ const NavbarUI = async () => {
   return (
     <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">
       <NavbarBrand>
-          <Link className="font-bold text-white" href="/">NEXT AUTH PRISMA TRAINING</Link>
+        <Link className="font-bold text-white" href="/">
+          NEXT AUTH PRISMA TRAINING
+        </Link>
       </NavbarBrand>
       {user && (
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -26,13 +29,23 @@ const NavbarUI = async () => {
             <Link className="text-white" href="/posts/add">
               ADD POST
             </Link>
-          </NavbarItem>{" "}
+          </NavbarItem>
           |
           <NavbarItem>
             <Link className="text-white" href="/posts">
               VIEW POSTS
             </Link>
           </NavbarItem>
+          {user?.role === Role.Admin && (
+            <>
+              |
+              <NavbarItem>
+                <Link className="text-white" href="/admin">
+                  ADMIN
+                </Link>
+              </NavbarItem>
+            </>
+          )}
         </NavbarContent>
       )}
       <NavbarContent justify="end">
