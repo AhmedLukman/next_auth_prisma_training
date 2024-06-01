@@ -13,7 +13,13 @@ import SubmitButton from "./SubmitButton";
 import { Post, User } from "@prisma/client";
 
 const PostCard = ({
-  post: { title, content, id: postId, author: {name}, authorId },
+  post: {
+    title,
+    content,
+    id: postId,
+    author: { name },
+    authorId,
+  },
   userId,
 }: {
   post: {
@@ -22,6 +28,16 @@ const PostCard = ({
   userId: string;
 }) => {
   const isUserTheAuthor = userId === authorId;
+
+  const formAction = async () => {
+    try {
+      const boundDeletePost = deletePost.bind(null, postId, authorId);
+      await boundDeletePost();
+    } catch (error) {
+      if (error instanceof Error) alert(error.message);
+    }
+  };
+
   return (
     <Card className="min-h-72">
       <CardHeader className="flex gap-3 text-lg font-bold">{title}</CardHeader>
@@ -36,7 +52,7 @@ const PostCard = ({
         }`}
       >
         {isUserTheAuthor && (
-          <form action={deletePost.bind(null, postId, authorId)}>
+          <form action={formAction}>
             <SubmitButton color="danger">Delete</SubmitButton>
           </form>
         )}
