@@ -9,16 +9,23 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { User } from "@prisma/client";
+import { Post, User } from "@prisma/client";
 import SubmitButton from "./SubmitButton";
 import { deleteUser } from "@/lib/actions";
 import { Role } from "@/lib/contants";
 
-const UsersTable = ({ users }: { users: User[] }) => {
+const UsersTable = ({
+  users,
+}: {
+  users: ({
+    Post: Post[];
+  } & User)[];
+}) => {
   const formAction = async (id: string) => {
     try {
       const boundDeleteUser = deleteUser.bind(null, id);
       await boundDeleteUser();
+      alert("User deleted successfully");
     } catch (error) {
       if (error instanceof Error) alert(error.message);
     }
@@ -32,6 +39,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
       <TableHeader>
         <TableColumn>NAME</TableColumn>
         <TableColumn>EMAIL</TableColumn>
+        <TableColumn>NO. OF POSTS</TableColumn>
         <TableColumn>ROLE</TableColumn>
         <TableColumn className="text-center">ACTIONS</TableColumn>
       </TableHeader>
@@ -40,6 +48,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
           <TableRow key={user.email}>
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
+            <TableCell className="text-center">{user.Post.length}</TableCell>
             <TableCell>{user.role}</TableCell>
             <TableCell className="flex justify-center">
               {user.role !== Role.Admin && (
