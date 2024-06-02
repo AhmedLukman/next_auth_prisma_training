@@ -1,15 +1,18 @@
 import React from "react";
 import { Avatar, Card, CardBody, CardHeader } from "@nextui-org/react";
-import { User } from "@prisma/client";
+import { User as dbUser } from "@prisma/client";
 import UserDetailsForm from "./UserDetailsForm";
+import { User } from "next-auth";
 
 const UserDetailsPage = ({
   userRecord,
-  isViewerTheUser,
+  user,
 }: {
-  userRecord: User;
-  isViewerTheUser: boolean;
+  userRecord: dbUser;
+  user: User;
 }) => {
+  const isViewerTheUser = user?.id === userRecord.id;
+
   return (
     <Card className="max-w-lg mx-auto p-10 mt-20">
       <CardHeader className="flex justify-between">
@@ -24,6 +27,7 @@ const UserDetailsPage = ({
       </CardHeader>
       <CardBody>
         <UserDetailsForm
+        user = {user}
           isViewerTheUser={isViewerTheUser}
           userRecord={userRecord}
         />
