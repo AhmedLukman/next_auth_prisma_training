@@ -5,6 +5,8 @@ import prisma from "./prisma";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { initialAddPostFormState } from "@/components/ui/AddPostForm";
+import { User } from "next-auth";
+import { Role } from "./contants";
 
 export const addPost = async (
   prevState: { titleError: string; contentError: string; dbError: string },
@@ -60,12 +62,9 @@ export const addPost = async (
   redirect("/posts");
 };
 
-export const deletePost = async (id: string, authorId: string) => {
-  const session = await auth();
-  const user = session?.user;
-
+export const deletePost = async (id: string, user: User, authorId: string) => {
   if (!user) throw new Error("You must be logged in to delete a post");
-  if (user.id !== authorId)
+  if (user.role !== Role.Admin && user.id !== authorId)
     throw new Error("You must be the author of the post to delete it");
 
   try {

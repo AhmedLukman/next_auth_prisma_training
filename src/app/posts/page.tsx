@@ -18,7 +18,7 @@ const ViewPostsFetchPage = async () => {
   });
 
   return (
-   <ViewPostsPage posts={posts} userId = {session.user?.id!}/>
+   <ViewPostsPage posts={posts} user = {user}/>
   );
 };
 
