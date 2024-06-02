@@ -10,7 +10,8 @@ import {
 } from "@nextui-org/react";
 import React from "react";
 import SubmitButton from "./SubmitButton";
-import { Post, User } from "@prisma/client";
+import { Post, User as dbUser } from "@prisma/client";
+import { User } from "next-auth";
 
 const PostCard = ({
   post: {
@@ -20,19 +21,21 @@ const PostCard = ({
     author: { name },
     authorId,
   },
-  userId,
+  user,
 }: {
   post: {
-    author: User;
+    author: dbUser;
   } & Post;
-  userId: string;
+  user: User;
 }) => {
-  const isUserTheAuthor = userId === authorId;
+  const isUserTheAuthor = user.id === authorId;
+  const isAdmin = user.role === "ADMIN";
 
   const formAction = async () => {
     try {
-      const boundDeletePost = deletePost.bind(null, postId, authorId);
+      const boundDeletePost = deletePost.bind(null, postId, user, authorId);
       await boundDeletePost();
+      alert("Post deleted successfully")
     } catch (error) {
       if (error instanceof Error) alert(error.message);
     }
@@ -48,10 +51,10 @@ const PostCard = ({
       <Divider />
       <CardFooter
         className={`flex ${
-          isUserTheAuthor ? "justify-between" : "justify-end"
+          isUserTheAuthor || isAdmin ? "justify-between" : "justify-end"
         }`}
       >
-        {isUserTheAuthor && (
+        {(isUserTheAuthor || isAdmin) && (
           <form action={formAction}>
             <SubmitButton color="danger">Delete</SubmitButton>
           </form>
