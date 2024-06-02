@@ -87,6 +87,9 @@ export const updateProfile = async ({ username }: { username: string }) => {
 
   // const isUserTheEditor = session?.user?.id === user.id;
 
+  // TODO: Add a check to see if the user is the editor
+  // TODO: Add ZOD validation for the username
+
   if (!user) throw new Error("You must be logged in to update your profile");
 
   if (username === user.name) return;
@@ -116,4 +119,25 @@ export const updateProfile = async ({ username }: { username: string }) => {
   }
 
   revalidatePath(`/user/${user.id}`);
+};
+
+export const deleteUser = async (id: string) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) throw new Error("You must be logged in to delete a user");
+  if (user.id === id) throw new Error("You cannot delete yourself");
+
+  try {
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error("Failed to delete user" + error.message);
+  }
+
+  revalidatePath("/admin");
 };
