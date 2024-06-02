@@ -13,6 +13,7 @@ import { Post, User } from "@prisma/client";
 import SubmitButton from "./SubmitButton";
 import { deleteUser } from "@/lib/actions";
 import { Role } from "@/lib/contants";
+import { Button, Link } from "@nextui-org/react";
 
 const UsersTable = ({
   users,
@@ -50,12 +51,17 @@ const UsersTable = ({
             <TableCell>{user.email}</TableCell>
             <TableCell className="text-center">{user.Post.length}</TableCell>
             <TableCell>{user.role}</TableCell>
-            <TableCell className="flex justify-center">
+            <TableCell className="space-y-2">
               {user.role !== Role.Admin && (
                 <form action={() => formAction(user.id)}>
-                  <SubmitButton color="danger">Delete</SubmitButton>
+                  <SubmitButton size="sm" color="danger">
+                    Delete
+                  </SubmitButton>
                 </form>
               )}
+              <Button size="sm" as={Link} href={`/user/${user.id}`}>
+                View
+              </Button>
             </TableCell>
           </TableRow>
         ))}
