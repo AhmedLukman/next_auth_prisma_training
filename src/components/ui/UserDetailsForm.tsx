@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import DateInputUI from "@/components/ui/DateInputUI";
@@ -7,13 +7,12 @@ import { updateProfile } from "@/lib/actions";
 import { Role, User as dbUser } from "@prisma/client";
 import { User } from "next-auth";
 
-
 // Uses onSubmit to handle submission of form data and error states to display error messages
 
 const UserDetailsForm = ({
   isViewerTheUser,
   userRecord,
-  user
+  user,
 }: {
   isViewerTheUser: boolean;
   userRecord: dbUser;
@@ -25,7 +24,7 @@ const UserDetailsForm = ({
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
 
-  const shouldShowButton = isViewerTheUser || user.role === Role.ADMIN;
+  const isViewerTheUserORAdmin = isViewerTheUser || user.role === Role.ADMIN;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -39,18 +38,22 @@ const UserDetailsForm = ({
 
     try {
       await updateProfile({
-        username: usernameInputRef.current!.value,
+        newUsername: usernameInputRef.current!.value,
+        user: user,
+        userRecord: userRecord,
       });
       setIsEditing(false);
       alert("Profile successfully updated");
     } catch (error) {
       if (error instanceof Error) {
-        const errorObj = JSON.parse(error.message) as {
-          field: string;
-          message: string;
-        };
-        if (errorObj.field === "username") setUsernameError(errorObj.message);
-        else alert("Failed to update profile: " + errorObj.message);
+        if (error.message) alert("Failed to update profile: " + error.message);
+        else {
+          const errorObj = JSON.parse(error.message) as {
+            field: string;
+            message: string;
+          };
+          if (errorObj.field === "username") setUsernameError(errorObj.message);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -83,7 +86,7 @@ const UserDetailsForm = ({
         isDisabled
       />
       <DateInputUI date={userRecord.createdAt} />
-      {shouldShowButton && !isEditing && (
+      {!isEditing && (
         <Button
           onClick={() => setIsEditing(true)}
           className="mt-8 w-full"
@@ -94,7 +97,7 @@ const UserDetailsForm = ({
         </Button>
       )}
 
-      {shouldShowButton && isEditing && (
+      {isEditing && (
         <Button
           type="submit"
           className="mt-8 w-full"
