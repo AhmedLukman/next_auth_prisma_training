@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { initialAddPostFormState } from "@/components/ui/AddPostForm";
 import { User } from "next-auth";
-import { Role } from "./contants";
+import { Role, User as dbUser } from "@prisma/client";
 
 export const addPost = async (
   prevState: { titleError: string; contentError: string; dbError: string },
@@ -64,7 +64,7 @@ export const addPost = async (
 
 export const deletePost = async (id: string, user: User, authorId: string) => {
   if (!user) throw new Error("You must be logged in to delete a post");
-  if (user.role !== Role.Admin && user.id !== authorId)
+  if (user.role !== Role.ADMIN && user.id !== authorId)
     throw new Error("You must be the author of the post to delete it");
 
   try {
@@ -80,20 +80,23 @@ export const deletePost = async (id: string, user: User, authorId: string) => {
   revalidatePath("/posts");
 };
 
-export const updateProfile = async ({ username }: { username: string }) => {
-  const session = await auth();
-  const user = session?.user;
-
-  // const isUserTheEditor = session?.user?.id === user.id;
-
-  // TODO: Add a check to see if the user is the editor
-  // TODO: Add ZOD validation for the username
+export const updateProfile = async ({
+  newUsername,
+  user,
+  userRecord,
+}: {
+  newUsername: string;
+  user: User;
+  userRecord: dbUser;
+}) => {
+  const isViewerTheUser = user?.id === userRecord.id;
+  const isViewerTheUserORAdmin = isViewerTheUser || user.role === Role.ADMIN;
 
   if (!user) throw new Error("You must be logged in to update your profile");
 
-  if (username === user.name) return;
+  if (!isViewerTheUserORAdmin) throw new Error("You are not authorized to edit this user");
 
-  if (username.trim().length === 0 || !username)
+  if (newUsername.trim().length === 0 || !newUsername)
     throw new Error(
       JSON.stringify({ field: "username", message: "Username is invalid" })
     );
@@ -101,10 +104,10 @@ export const updateProfile = async ({ username }: { username: string }) => {
   try {
     await prisma.user.update({
       where: {
-        id: user.id,
+        id: userRecord.id, 
       },
       data: {
-        name: username,
+        name: newUsername,
       },
     });
   } catch (error) {
