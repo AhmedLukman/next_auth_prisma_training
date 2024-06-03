@@ -33,7 +33,7 @@ const UserDetailsFetchPage = async ({
 }) => {
   const session = await auth();
   const user = session?.user;
-  if (!user) redirect(`/api/auth/signin?callbackUrl=/user/${id}`);
+  if (!user) redirect(`/api/auth/signin?callbackUrl=/users/${id}`);
 
   const userRecord = await getUserRecord(id);
   if (!userRecord) notFound();

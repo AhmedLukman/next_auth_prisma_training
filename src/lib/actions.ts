@@ -141,5 +141,5 @@ export const deleteUser = async (id: string) => {
       throw new Error("Failed to delete user" + error.message);
   }
 
-  revalidatePath("/admin");
+  revalidatePath("/users");
 };

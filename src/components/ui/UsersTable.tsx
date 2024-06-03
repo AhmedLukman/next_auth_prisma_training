@@ -59,7 +59,7 @@ const UsersTable = ({
                   </SubmitButton>
                 </form>
               )}
-              <Button size="sm" as={Link} href={`/user/${user.id}`}>
+              <Button size="sm" as={Link} href={`/users/${user.id}`}>
                 View
               </Button>
             </TableCell>

@@ -40,8 +40,8 @@ const NavbarUI = async () => {
             <>
               |
               <NavbarItem>
-                <Link className="text-white" href="/admin">
-                  ADMIN
+                <Link className="text-white" href="/users">
+                  View Users
                 </Link>
               </NavbarItem>
             </>
@@ -62,7 +62,7 @@ const NavbarUI = async () => {
           )}
           {user && (
             <Tooltip content={user.name}>
-              <Link href={`/user/${user.id}`}>
+              <Link href={`/users/${user.id}`}>
                 <Avatar
                   name={user.name || ""}
                   src={user.image || ""}
