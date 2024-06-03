@@ -27,7 +27,7 @@ const UserDetailsPage = ({
       </CardHeader>
       <CardBody>
         <UserDetailsForm
-        user = {user}
+          user={user}
           isViewerTheUser={isViewerTheUser}
           userRecord={userRecord}
         />
