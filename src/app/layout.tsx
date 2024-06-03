@@ -18,6 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="f3k86oX7X56RFj3soV6Of5GSAgeTY_YUPnv46RYXGGw"
+        />
+      </head>
       <body className={inter.className}>
         <Providers>
           <NavbarUI />
