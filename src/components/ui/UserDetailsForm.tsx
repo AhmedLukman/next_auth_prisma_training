@@ -86,7 +86,7 @@ const UserDetailsForm = ({
         isDisabled
       />
       <DateInputUI date={userRecord.createdAt} />
-      {!isEditing && (
+      {isViewerTheUserORAdmin && !isEditing && (
         <Button
           onClick={() => setIsEditing(true)}
           className="mt-8 w-full"
@@ -97,7 +97,7 @@ const UserDetailsForm = ({
         </Button>
       )}
 
-      {isEditing && (
+      {isViewerTheUser && isEditing && (
         <Button
           type="submit"
           className="mt-8 w-full"
