@@ -10,10 +10,11 @@ const getUserRecord = cache(async (id: string) => {
   });
 });
 
-export const generateStaticParams = async () => {
-  const users = await prisma.user.findMany();
-  return users.map((user) => ({ params: { id: user.id.toString() } }));
-};
+//  ~ brings server error in production mode, see into it later ~
+// export const generateStaticParams = async () => {
+//   const users = await prisma.user.findMany();
+//   return users.map((user) => ({ params: { id: user.id } }));
+// };
 
 export const generateMetadata = async ({
   params: { id },
@@ -38,12 +39,7 @@ const UserDetailsFetchPage = async ({
   const userRecord = await getUserRecord(id);
   if (!userRecord || !userRecord.id) notFound();
 
-  return (
-    <UserDetailsPage
-      userRecord={userRecord}
-      user={user}
-    />
-  );
+  return <UserDetailsPage userRecord={userRecord} user={user} />;
 };
 
 export default UserDetailsFetchPage;
