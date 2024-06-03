@@ -54,7 +54,7 @@ const NavbarUI = async () => {
             <form
               action={async () => {
                 "use server";
-                await signIn("google");
+                await signIn();
               }}
             >
               <Button type="submit">Sign in</Button>
