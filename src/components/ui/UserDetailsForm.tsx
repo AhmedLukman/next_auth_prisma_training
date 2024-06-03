@@ -97,7 +97,7 @@ const UserDetailsForm = ({
         </Button>
       )}
 
-      {isViewerTheUser && isEditing && (
+      {isViewerTheUserORAdmin && isEditing && (
         <Button
           type="submit"
           className="mt-8 w-full"
