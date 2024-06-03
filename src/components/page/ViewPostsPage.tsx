@@ -17,6 +17,7 @@ const ViewPostsPage = ({
 }) => {
   const [value, setValue] = useState<Selection>(new Set(["all"]));
   const [mutatingPosts, setMutatingPosts] = useState(posts);
+  const postsLength = mutatingPosts.length;
 
   const userId = user.id;
 
@@ -43,7 +44,7 @@ const ViewPostsPage = ({
           <SelectItem key="all">All</SelectItem>
           <SelectItem key="my">My</SelectItem>
         </Select>
-        <h2 className="text-3xl">Posts</h2>
+        <h2 className="text-3xl">Posts ({postsLength})</h2>
       </div>
       <section className="grid grid-cols-2 max-w-5xl mx-auto justify-center my-10 gap-5">
         {mutatingPosts.length === 0 && <p>No posts added yet.</p>}
