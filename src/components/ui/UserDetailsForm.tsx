@@ -68,12 +68,12 @@ const UserDetailsForm = ({
         ref={usernameInputRef}
         type="text"
         variant="underlined"
-        required
         defaultValue={userRecord.name || ""}
         label="Username"
         disabled={!isEditing}
         isInvalid={!!usernameError}
         errorMessage={usernameError}
+        isRequired
       />
       <Input
         type="email"

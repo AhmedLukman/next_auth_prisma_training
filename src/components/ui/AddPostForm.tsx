@@ -22,6 +22,7 @@ const AddPostForm = () => {
         label="Enter post title"
         errorMessage={titleError}
         isInvalid={!!titleError}
+        isRequired
       />
       <Input
         className="mb-10"
@@ -31,6 +32,7 @@ const AddPostForm = () => {
         label="Enter post content"
         errorMessage={contentError}
         isInvalid={!!contentError}
+        isRequired
       />
       <SubmitButton color="secondary">Add post</SubmitButton>
      {dbError && <p className="mt-5 text-red-500">{dbError}</p>}
