@@ -41,7 +41,7 @@ const NavbarUI = async () => {
               |
               <NavbarItem>
                 <Link className="text-white" href="/users">
-                  View Users
+                  VIEW USERS
                 </Link>
               </NavbarItem>
             </>
