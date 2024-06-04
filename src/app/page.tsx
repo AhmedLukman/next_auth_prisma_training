@@ -1,8 +1,11 @@
-import { cachedAuth } from "@/lib/util";
+"use client";
 
-export default async function Home() {
-  const session = await cachedAuth();
-  const user = session?.user;
+import { useSession } from "next-auth/react";
+
+export default function Home() {
+  const session = useSession();
+  const user = session.data?.user;
+  const isLoading = session.status === "loading";
   return (
     <main className="flex items-center mt-32 flex-col gap-5">
       <h2 className="text-3xl">Hello and welcome!</h2>
@@ -12,7 +15,8 @@ export default async function Home() {
         together with prisma as an ORM to efficiently authenticate and store
         data in an online database.
       </p>
-      {!user && (
+      {isLoading && <p className="text-center">Loading...</p>}
+      {!user && !isLoading && (
         <p>
           {" "}
           Sign up in order to add and view posts. You can choose to get admin
