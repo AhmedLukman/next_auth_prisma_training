@@ -21,7 +21,7 @@ const UserDropdown = () => {
             disableRipple
             className="p-0 text-white bg-transparent data-[hover=true]:bg-transparent"
           >
-            USER
+            USERS
           </Button>
         </DropdownTrigger>
       </NavbarItem>
