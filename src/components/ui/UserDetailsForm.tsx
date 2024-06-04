@@ -6,6 +6,7 @@ import { Button, Input } from "@nextui-org/react";
 import { updateProfile } from "@/lib/actions";
 import { Role, User as dbUser } from "@prisma/client";
 import { User } from "next-auth";
+import { useSession } from "next-auth/react";
 
 // Uses onSubmit to handle submission of form data and error states to display error messages
 
@@ -23,6 +24,8 @@ const UserDetailsForm = ({
   const [usernameError, setUsernameError] = useState("");
 
   const usernameInputRef = useRef<HTMLInputElement>(null);
+
+  const session = useSession(); // Automatically deduplicated
 
   const isViewerTheUserORAdmin = isViewerTheUser || user.role === Role.ADMIN;
 
@@ -44,6 +47,7 @@ const UserDetailsForm = ({
       });
       setIsEditing(false);
       alert("Profile successfully updated");
+      session.update();
     } catch (error) {
       if (error instanceof Error) {
         if (error.message) alert("Failed to update profile: " + error.message);
