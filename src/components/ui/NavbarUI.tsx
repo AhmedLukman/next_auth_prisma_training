@@ -1,4 +1,5 @@
-import { signIn, signOut } from "@/auth";
+"use client";
+
 import {
   Navbar,
   NavbarBrand,
@@ -9,14 +10,14 @@ import {
   Avatar,
   Tooltip,
 } from "@nextui-org/react";
-import { cachedAuth } from "@/lib/util";
 import React from "react";
-import SubmitButton from "./SubmitButton";
 import { Role } from "@/lib/contants";
+import PostDropdown from "./PostDropdown";
+import { signIn, signOut, useSession } from "next-auth/react";
 
-const NavbarUI = async () => {
-  const session = await cachedAuth();
-  const user = session?.user;
+const NavbarUI = () => {
+  const session = useSession();
+  const user = session.data?.user;
   return (
     <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">
       <NavbarBrand>
@@ -26,18 +27,13 @@ const NavbarUI = async () => {
       </NavbarBrand>
       {user && (
         <NavbarContent className="hidden sm:flex gap-4" justify="center">
-          <NavbarItem>
-            <Link className="text-white" href="/posts/add">
-              ADD POST
-            </Link>
-          </NavbarItem>
-          |
+          <PostDropdown />|
           <NavbarItem>
             <Link className="text-white" href="/posts">
               VIEW POSTS
             </Link>
           </NavbarItem>
-          {user?.role === Role.Admin && (
+          {user.role === Role.Admin && (
             <>
               |
               <NavbarItem>
@@ -51,15 +47,8 @@ const NavbarUI = async () => {
       )}
       <NavbarContent justify="end">
         <NavbarItem>
-          {!user && (
-            <form
-              action={async () => {
-                "use server";
-                await signIn();
-              }}
-            >
-              <Button type="submit">Sign in</Button>
-            </form>
+          {!user && session.status !== "loading" && (
+            <Button onPress={() => signIn()}>Sign in</Button>
           )}
           {user && (
             <Tooltip content={user.name}>
@@ -75,14 +64,9 @@ const NavbarUI = async () => {
         </NavbarItem>
         {user && (
           <NavbarItem>
-            <form
-              action={async () => {
-                "use server";
-                await signOut();
-              }}
-            >
-              <SubmitButton>Sign Out</SubmitButton>
-            </form>
+            <Button onPress={() => signOut({ callbackUrl: "/" })}>
+              Sign Out
+            </Button>
           </NavbarItem>
         )}
       </NavbarContent>
