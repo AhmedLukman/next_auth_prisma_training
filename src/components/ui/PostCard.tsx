@@ -6,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
   Divider,
+  Link,
   cn,
 } from "@nextui-org/react";
 import React from "react";
@@ -59,7 +60,7 @@ const PostCard = ({
             <SubmitButton color="danger">Delete</SubmitButton>
           </form>
         )}
-        <p>@{name}</p>
+        <Link href={`/users/${authorId}`}>@{name}</Link>
       </CardFooter>
     </Card>
   );
