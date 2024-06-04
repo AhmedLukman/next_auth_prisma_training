@@ -10,11 +10,10 @@ const getUserRecord = cache(async (id: string) => {
   });
 });
 
-//  ~ brings server error in production mode, see into it later ~
-// export const generateStaticParams = async () => {
-//   const users = await prisma.user.findMany();
-//   return users.map((user) => ({ params: { id: user.id } }));
-// };
+export const generateStaticParams = async () => {
+  const users = await prisma.user.findMany();
+  return users.map(({id}) => ({id}));
+};
 
 export const generateMetadata = async ({
   params: { id },
@@ -34,6 +33,7 @@ const UserDetailsFetchPage = async ({
 }) => {
   const session = await cachedAuth();
   const user = session?.user;
+
   if (!user) redirect(`/api/auth/signin?callbackUrl=/users/${id}`);
 
   const userRecord = await getUserRecord(id);
