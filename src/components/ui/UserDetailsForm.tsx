@@ -47,7 +47,7 @@ const UserDetailsForm = ({
       });
       setIsEditing(false);
       alert("Profile successfully updated");
-      session.update();
+      if (isViewerTheUser) session.update();
     } catch (error) {
       if (error instanceof Error) {
         if (error.message) alert("Failed to update profile: " + error.message);
