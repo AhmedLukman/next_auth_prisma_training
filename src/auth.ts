@@ -11,5 +11,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   // }
   adapter: PrismaAdapter(prisma),
   providers: [Google, Github],
-  trustHost: true
+  trustHost: true,
+  callbacks: {
+    session({ session, user }) {
+      session.user.role = user.role;
+      return session;
+    },
+  },
 });
