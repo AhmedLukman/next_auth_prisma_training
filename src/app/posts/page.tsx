@@ -1,6 +1,5 @@
 import { cachedAuth } from "@/lib/util";
 import ViewPostsPage from "@/components/page/ViewPostsPage";
-import PostCard from "@/components/ui/PostCard";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import React from "react";
