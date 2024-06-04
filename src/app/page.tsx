@@ -1,11 +1,13 @@
 "use client";
 
+import { Role } from "@/lib/contants";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
   const session = useSession();
   const user = session.data?.user;
   const isLoading = session.status === "loading";
+  const isAdmin = user?.role === Role.Admin;
   return (
     <main className="flex items-center mt-32 flex-col gap-5">
       <h2 className="text-3xl">Hello and welcome!</h2>
@@ -23,11 +25,13 @@ export default function Home() {
           rights for free so be sure to check it out!{" "}
         </p>
       )}
-      {user && (
+      {user && !isAdmin ? (
         <p>
           You are authenticated and can add and view posts, and gain admin
           rights as well by clicking on the be admin button on the navbar
         </p>
+      ) : (
+        <p>You are an admin, enjoy the perks!</p>
       )}
     </main>
   );
