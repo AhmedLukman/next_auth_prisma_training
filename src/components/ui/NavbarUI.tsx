@@ -49,9 +49,8 @@ const NavbarUI = () => {
           {!user && !isLoading && (
             <Button onPress={() => signIn()}>Sign in</Button>
           )}
-          {isLoading && <span>Loading...</span>}
           {user && (
-            <Tooltip content={user.name}>
+            <Tooltip content={isLoading ? "Loading..." : user.name}>
               <Link href={`/users/${user.id}`}>
                 <Avatar
                   name={user.name || ""}
