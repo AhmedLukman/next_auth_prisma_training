@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { cachedAuth } from "@/lib/util";
 import UserDetailsPage from "@/components/ui/UserDetailsPage";
 import prisma from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
@@ -32,7 +32,7 @@ const UserDetailsFetchPage = async ({
 }: {
   params: { id: string };
 }) => {
-  const session = await auth();
+  const session = await cachedAuth();
   const user = session?.user;
   if (!user) redirect(`/api/auth/signin?callbackUrl=/users/${id}`);
 

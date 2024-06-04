@@ -1,4 +1,4 @@
-import { auth, signIn, signOut } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import {
   Navbar,
   NavbarBrand,
@@ -9,12 +9,13 @@ import {
   Avatar,
   Tooltip,
 } from "@nextui-org/react";
+import { cachedAuth } from "@/lib/util";
 import React from "react";
 import SubmitButton from "./SubmitButton";
 import { Role } from "@/lib/contants";
 
 const NavbarUI = async () => {
-  const session = await auth();
+  const session = await cachedAuth();
   const user = session?.user;
   return (
     <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">

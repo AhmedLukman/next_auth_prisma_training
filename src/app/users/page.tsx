@@ -1,12 +1,12 @@
 import React from "react";
 import prisma from "@/lib/prisma";
-import { auth } from "@/auth";
+import { cachedAuth } from "@/lib/util";
 import { redirect } from "next/navigation";
 import UsersTable from "@/components/ui/UsersTable";
 import { Role } from "@/lib/contants";
 
 const ViewUsersPage = async () => {
-  const session = await auth();
+  const session = await cachedAuth();
   const user = session?.user;
   if (!user) redirect("/api/auth/signin?callbackUrl=/users");
   if (user.role !== Role.Admin) redirect("/");

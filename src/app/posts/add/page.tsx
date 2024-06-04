@@ -1,10 +1,10 @@
-import { auth } from "@/auth";
+import { cachedAuth } from "@/lib/util";
 import AddPostForm from "@/components/ui/AddPostForm";
 import { redirect } from "next/navigation";
 import React from "react";
 
 const AddPostPage = async () => {
-  const session = await auth();
+  const session = await cachedAuth();
   const user = session?.user;
   if (!user) redirect("/api/auth/signin?callbackUrl=/posts/add");
   return (
