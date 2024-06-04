@@ -21,7 +21,7 @@ const NavbarUI = async () => {
     <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">
       <NavbarBrand>
         <Link className="font-bold text-white" href="/">
-          NEXT AUTH PRISMA TRAINING
+          NAPT
         </Link>
       </NavbarBrand>
       {user && (
