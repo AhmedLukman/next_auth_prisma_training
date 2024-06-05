@@ -8,3 +8,13 @@ declare module "next-auth" {
     user: User & DefaultSession["user"];
   }
 }
+
+// --- OR ---
+// import { Session } from "next-auth";
+// import { User as PrismaUser } from "@prisma/client";
+
+// declare module "next-auth" {
+//   interface Session {
+//     user: PrismaUser;
+//   }
+// }
