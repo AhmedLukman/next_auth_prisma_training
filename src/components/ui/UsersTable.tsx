@@ -41,15 +41,15 @@ const UsersTable = ({
         <TableColumn>NAME</TableColumn>
         <TableColumn>EMAIL</TableColumn>
         <TableColumn>NO. OF POSTS</TableColumn>
-        <TableColumn>ROLE</TableColumn>
-        <TableColumn className="text-center">ACTIONS</TableColumn>
+        <TableColumn >ROLE</TableColumn>
+        <TableColumn >ACTIONS</TableColumn>
       </TableHeader>
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.email}>
             <TableCell>{user.name}</TableCell>
             <TableCell>{user.email}</TableCell>
-            <TableCell className="text-center">{user.Post.length}</TableCell>
+            <TableCell>{user.Post.length}</TableCell>
             <TableCell>{user.role}</TableCell>
             <TableCell className="space-y-2">
               {user.role !== Role.Admin && (
