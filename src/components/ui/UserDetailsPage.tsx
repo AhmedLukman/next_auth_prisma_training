@@ -14,7 +14,7 @@ const UserDetailsPage = ({
   const isViewerTheUser = user?.id === userRecord.id;
 
   return (
-    <Card className="max-w-lg mx-auto p-10 mt-20">
+    <Card className="max-w-lg sm:mx-auto p-10 mt-20 mx-5">
       <CardHeader className="flex justify-between">
         <h2 className="text-2xl">
           {isViewerTheUser ? "My Profile" : "User profile"}
