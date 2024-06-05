@@ -165,5 +165,29 @@ export const beAdmin = async (id: string) => {
       throw new Error("Failed to make user an admin" + error.message);
   }
 
+  // You can revalidate specific paths that show different content to admins instead of revalidating the whole site
+  revalidatePath("/", "layout");
+};
+
+export const removeAdmin = async (id: string) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) throw new Error("You must be logged in to remove admin status");
+
+  try {
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        role: Role.USER,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error("Failed to remove admin status" + error.message);
+  }
+
   revalidatePath("/", "layout");
 };
