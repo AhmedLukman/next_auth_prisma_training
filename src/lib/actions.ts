@@ -94,7 +94,8 @@ export const updateProfile = async ({
 
   if (!user) throw new Error("You must be logged in to update your profile");
 
-  if (!isViewerTheUserORAdmin) throw new Error("You are not authorized to edit this user");
+  if (!isViewerTheUserORAdmin)
+    throw new Error("You are not authorized to edit this user");
 
   if (newUsername.trim().length === 0 || !newUsername)
     throw new Error(
@@ -104,7 +105,7 @@ export const updateProfile = async ({
   try {
     await prisma.user.update({
       where: {
-        id: userRecord.id, 
+        id: userRecord.id,
       },
       data: {
         name: newUsername,
@@ -142,4 +143,27 @@ export const deleteUser = async (id: string) => {
   }
 
   revalidatePath("/users");
+};
+
+export const beAdmin = async (id: string) => {
+  const session = await auth();
+  const user = session?.user;
+
+  if (!user) throw new Error("You must be logged in to make yourself an admin");
+
+  try {
+    await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        role: Role.ADMIN,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error("Failed to make user an admin" + error.message);
+  }
+
+  revalidatePath("/", "layout");
 };

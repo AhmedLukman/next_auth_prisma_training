@@ -15,6 +15,7 @@ import PostDropdown from "./PostDropdown";
 import { signIn, signOut, useSession } from "next-auth/react";
 import UserDropdown from "./UserDropdown";
 import { Role } from "@prisma/client";
+import { beAdmin } from "@/lib/actions";
 
 const NavbarUI = () => {
   const session = useSession();
@@ -22,6 +23,19 @@ const NavbarUI = () => {
   const role = session.data?.user.role;
   const isAdmin = role === Role.ADMIN;
   const isLoading = session.status === "loading";
+
+  const handleBeAdminClick = async () => {
+    try {
+      await beAdmin(user!.id!);
+      alert("You are now an admin!");
+      session.update();
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      }
+    }
+  };
+
   return (
     <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">
       <NavbarBrand>
@@ -67,6 +81,11 @@ const NavbarUI = () => {
               Sign Out
             </Button>
           </NavbarItem>
+        )}
+        {user && !isAdmin && (
+          <Button color="secondary" onPress={handleBeAdminClick}>
+            Be Admin
+          </Button>
         )}
       </NavbarContent>
     </Navbar>
