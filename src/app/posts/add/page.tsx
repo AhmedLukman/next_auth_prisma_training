@@ -8,7 +8,7 @@ const AddPostPage = async () => {
   const user = session?.user;
   if (!user) redirect("/api/auth/signin?callbackUrl=/posts/add");
   return (
-    <main>
+    <main className="px-5">
       <div className="max-w-lg mx-auto">
         <h1 className="text-3xl mt-14 mb-8">Add a new post</h1>
         <AddPostForm />

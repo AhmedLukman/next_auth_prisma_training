@@ -32,7 +32,7 @@ const ViewPostsPage = ({
   }, [value, posts, userId]);
 
   return (
-    <main>
+    <main className="px-5">
       <div className="flex gap-5 justify-center items-center mt-20">
         <Select
           disallowEmptySelection
@@ -46,7 +46,7 @@ const ViewPostsPage = ({
         </Select>
         <h2 className="text-3xl">Posts ({postsLength})</h2>
       </div>
-      <section className="grid grid-cols-2 max-w-5xl mx-auto justify-center my-10 gap-5">
+      <section className="grid grid-cols-1 sm:grid-cols-2 sm:max-w-5xl mx-auto justify-center my-10 gap-5">
         {mutatingPosts.length === 0 && <p>No posts added yet.</p>}
         {mutatingPosts.map((post) => {
           return <PostCard key={post.id} post={post} user={user} />;
