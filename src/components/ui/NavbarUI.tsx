@@ -21,14 +21,16 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import UserDropdown from "./UserDropdown";
 import { Role } from "@prisma/client";
 import { beAdmin, removeAdmin } from "@/lib/actions";
+import { usePathname } from "next/navigation";
 
 const NavbarUI = () => {
-  const session = useSession();
-  const user = session.data?.user;
-  const role = session.data?.user.role;
+  const { data, status, update } = useSession();
+  const user = data?.user;
+  const role = data?.user.role;
   const isAdmin = role === Role.ADMIN;
-  const isLoading = session.status === "loading";
+  const isLoading = status === "loading";
 
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
@@ -54,7 +56,7 @@ const NavbarUI = () => {
     try {
       await beAdmin(user!.id!);
       alert("You are now an admin!");
-      session.update();
+      update();
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
@@ -66,7 +68,7 @@ const NavbarUI = () => {
     try {
       await removeAdmin(user!.id!);
       alert("You are no longer an admin!");
-      session.update();
+      update();
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
@@ -148,7 +150,10 @@ const NavbarUI = () => {
       <NavbarMenu>
         {menuItems.slice(0, -1).map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link color="foreground" className="w-full" href={item.href}>
+            <Link
+              color={pathname === item.href ? "secondary" : "foreground"}
+              href={item.href}
+            >
               {item.label}
             </Link>
           </NavbarMenuItem>
@@ -156,7 +161,11 @@ const NavbarUI = () => {
         {isAdmin &&
           menuItems.slice(-1).map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link color="foreground" className="w-full" href={item.href}>
+              <Link
+                color={pathname === item.href ? "secondary" : "foreground"}
+                className="w-full"
+                href={item.href}
+              >
                 {item.label}
               </Link>
             </NavbarMenuItem>
