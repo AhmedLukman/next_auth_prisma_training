@@ -34,8 +34,8 @@ const UsersTable = ({
 
   return (
     <Table
-      aria-label="Example static collection table"
-      className="max-w-2xl md:mx-auto mx-5"
+      aria-label="Users Table"
+      className="sm:max-w-2xl sm:mx-auto px-5"
     >
       <TableHeader>
         <TableColumn>NAME</TableColumn>
