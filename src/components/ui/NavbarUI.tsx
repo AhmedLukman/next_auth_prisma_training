@@ -10,8 +10,12 @@ import {
   Avatar,
   Tooltip,
   cn,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  Divider,
 } from "@nextui-org/react";
-import React from "react";
+import React, { useState } from "react";
 import PostDropdown from "./PostDropdown";
 import { signIn, signOut, useSession } from "next-auth/react";
 import UserDropdown from "./UserDropdown";
@@ -24,6 +28,27 @@ const NavbarUI = () => {
   const role = session.data?.user.role;
   const isAdmin = role === Role.ADMIN;
   const isLoading = session.status === "loading";
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuItems = [
+    {
+      label: "Home",
+      href: "/",
+    },
+    {
+      label: "Add Post",
+      href: "/posts/add",
+    },
+    {
+      label: "View Posts",
+      href: "/posts",
+    },
+    {
+      label: "View Users",
+      href: "/users",
+    },
+  ];
 
   const handleBeAdminClick = async () => {
     try {
@@ -59,7 +84,12 @@ const NavbarUI = () => {
           "bg-gradient-to-b from-red-600 to-red-500": isAdmin,
         }
       )}
+      onMenuOpenChange={setIsMenuOpen}
     >
+      <NavbarMenuToggle
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className="sm:hidden"
+      />
       <NavbarBrand>
         <Link className="font-bold text-white" href="/">
           NAPT
@@ -98,6 +128,41 @@ const NavbarUI = () => {
           )}
         </NavbarItem>
         {user && (
+          <NavbarItem className=" hidden sm:block">
+            <Button onPress={() => signOut({ callbackUrl: "/" })}>
+              Sign Out
+            </Button>
+          </NavbarItem>
+        )}
+        {user && (
+          <NavbarItem className=" hidden sm:block">
+            <Button
+              color="secondary"
+              onPress={!isAdmin ? handleBeAdminClick : handleRemoveAdminClick}
+            >
+              {!isAdmin ? "Be Admin" : "Remove Admin"}
+            </Button>
+          </NavbarItem>
+        )}
+      </NavbarContent>
+      <NavbarMenu>
+        {menuItems.slice(0, -1).map((item, index) => (
+          <NavbarMenuItem key={`${item}-${index}`}>
+            <Link color="foreground" className="w-full" href={item.href}>
+              {item.label}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+        {isAdmin &&
+          menuItems.slice(-1).map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link color="foreground" className="w-full" href={item.href}>
+                {item.label}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        <Divider className="my-2" />
+        {user && (
           <NavbarItem>
             <Button onPress={() => signOut({ callbackUrl: "/" })}>
               Sign Out
@@ -105,14 +170,16 @@ const NavbarUI = () => {
           </NavbarItem>
         )}
         {user && (
-          <Button
-            color="secondary"
-            onPress={!isAdmin ? handleBeAdminClick : handleRemoveAdminClick}
-          >
-            {!isAdmin ? "Be Admin" : "Remove Admin"}
-          </Button>
+          <NavbarItem>
+            <Button
+              color="secondary"
+              onPress={!isAdmin ? handleBeAdminClick : handleRemoveAdminClick}
+            >
+              {!isAdmin ? "Be Admin" : "Remove Admin"}
+            </Button>
+          </NavbarItem>
         )}
-      </NavbarContent>
+      </NavbarMenu>
     </Navbar>
   );
 };
