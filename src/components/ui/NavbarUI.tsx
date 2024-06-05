@@ -9,6 +9,7 @@ import {
   Button,
   Avatar,
   Tooltip,
+  cn,
 } from "@nextui-org/react";
 import React from "react";
 import PostDropdown from "./PostDropdown";
@@ -49,7 +50,16 @@ const NavbarUI = () => {
   };
 
   return (
-    <Navbar className=" bg-gradient-to-b from-purple-600 to-purple-500 text-white">
+    <Navbar
+      className={cn(
+        " bg-gradient-to-b from-purple-600 to-purple-500 text-white",
+        {
+          " bg-gradient-to-r from-red-500 to-blue-500 animate-gradient-x":
+            isLoading,
+          "bg-gradient-to-b from-red-600 to-red-500": isAdmin,
+        }
+      )}
+    >
       <NavbarBrand>
         <Link className="font-bold text-white" href="/">
           NAPT
@@ -94,11 +104,14 @@ const NavbarUI = () => {
             </Button>
           </NavbarItem>
         )}
-        {user &&  
-          <Button color="secondary" onPress={!isAdmin ? handleBeAdminClick : handleRemoveAdminClick}>
-            {!isAdmin ? 'Be Admin' : 'Remove Admin'}
+        {user && (
+          <Button
+            color="secondary"
+            onPress={!isAdmin ? handleBeAdminClick : handleRemoveAdminClick}
+          >
+            {!isAdmin ? "Be Admin" : "Remove Admin"}
           </Button>
-        }
+        )}
       </NavbarContent>
     </Navbar>
   );

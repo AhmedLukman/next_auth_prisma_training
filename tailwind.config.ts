@@ -15,6 +15,21 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      animation: {
+        "gradient-x": "gradient-x 5s ease infinite",
+      },
+      keyframes: {
+        "gradient-x": {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left bottom",
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right bottom",
+          },
+        },
+      },
     },
   },
   darkMode: "class",
