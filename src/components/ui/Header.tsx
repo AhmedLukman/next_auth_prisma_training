@@ -84,7 +84,7 @@ const Header = () => {
           {
             " bg-gradient-to-r from-red-500 to-blue-500 animate-gradient-x":
               isLoading,
-            "bg-gradient-to-b from-red-600 to-red-500": isAdmin,
+            "bg-gradient-to-b from-red-600 to-red-500": isAdmin && !isLoading,
           }
         )}
         onMenuOpenChange={setIsMenuOpen}
