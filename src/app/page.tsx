@@ -20,18 +20,16 @@ export default function Home() {
       {isLoading && <p className="text-center">Loading...</p>}
       {!user && !isLoading && (
         <p>
-          {" "}
           Sign up in order to add and view posts. You can choose to get admin
           rights for free so be sure to check it out!{" "}
         </p>
       )}
-      {user && !isAdmin ? (
+      {user && (
         <p>
-          You are authenticated and can add and view posts, and gain admin
-          rights as well by clicking on the be admin button on the navbar
+          {!isAdmin &&
+            "You are authenticated and can add and view posts. You can gain admin rights as well by clicking on the 'Be Admin' button on the navbar."}
+          {isAdmin && "You are an admin, enjoy the perks!"}
         </p>
-      ) : (
-        <p>You are an admin, enjoy the perks!</p>
       )}
     </main>
   );
