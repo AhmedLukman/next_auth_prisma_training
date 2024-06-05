@@ -16,7 +16,7 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       animation: {
-        "gradient-x": "gradient-x 5s ease infinite",
+        "gradient-x": "gradient-x 3s ease infinite",
       },
       keyframes: {
         "gradient-x": {
